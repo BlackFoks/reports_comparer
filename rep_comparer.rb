@@ -9,6 +9,22 @@ class TxtReport
 end
 
 class ReportComparer
+  def compare_dirs(old_dir, new_dir)
+    old_reps, new_reps = [], []
+    
+    # get list of old reports
+    Dir.chdir(old_dir)
+    old_reps = Dir.glob('*.*')
+    
+    # get list of new reposts
+    Dir.chdir(new_dir)
+    new_reps = Dir.glob('*.*')
+    
+    old_reps.each {|r| puts r }
+    new_reps.each {|r| puts r }
+    
+  end
+
   def compare(oldTxt, newTxt, match_all = false)
     diffs = []
     old_rep = {}
@@ -109,4 +125,5 @@ end
 
 # compare
 rc = ReportComparer.new
-rc.compare old_txt, new_txt, match_all
+# rc.compare old_txt, new_txt, match_all
+rc.compare_dirs ARGV[-2], ARGV[-1]
