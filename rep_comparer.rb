@@ -15,35 +15,23 @@ class ReportComparer
     new_rep = {}
     
     # read old file
-    File.open(oldTxt.filename, 'r') do |old_file|
-      old_file.lines.each do |line|
-        old_rep[old_file.lineno] = line
-      end      
+    File.open(oldTxt.filename, 'r') do |f|
+      f.lines.each {|line| old_rep[f.lineno] = line }      
     end
     
     # read new file
-    File.open(newTxt.filename, 'r') do |new_file|
-      new_file.lines.each do |line|
-        new_rep[new_file.lineno] = line
-      end      
+    File.open(newTxt.filename, 'r') do |f|
+      f.lines.each {|line| new_rep[f.lineno] = line }      
     end
     
     # compare
     (0..new_rep.count).each do |i|
       if old_rep[i] && new_rep[i]
         # if different
-        if old_rep[i] != new_rep[i]
-          diffs << { :old => old_rep[i], :new => new_rep[i] } 
-        end
+        diffs << { :old => old_rep[i], :new => new_rep[i] } if old_rep[i] != new_rep[i]
       else
-        # if no such line in old file
-        if !old_rep[i]
-          diffs << { :old => nil, :new => new_rep[i] }
-        end
-        # if no such line in new line
-        if !new_rep[i]
-          diffs << { :old => old_rep[i], :new => nil }
-        end
+        diffs << { :old => nil, :new => new_rep[i] } if !old_rep[i]
+        diffs << { :old => old_rep[i], :new => nil } if !new_rep[i]
       end
     end
 
