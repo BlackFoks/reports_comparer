@@ -35,6 +35,7 @@ class ReportComparer
       end
     end
 
+    # diff counter
     count = 0
     
     # show diff
