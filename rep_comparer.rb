@@ -9,10 +9,10 @@ class TxtReport
 end
 
 class ReportComparer
-  def compare(oldTxt, newTxt)
+  def compare(oldTxt, newTxt, match_all = false)
     diffs = []
     old_rep = {}
-    new_rep = {}
+    new_rep = {}    
     
     # read old file
     File.open(oldTxt.filename, 'r') do |f|
@@ -38,10 +38,10 @@ class ReportComparer
     # show diff
     diffs.each do |diff|
       if diff[:old] || diff[:new]
-        if /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') || # date like 12.07.2011 13:45
+        if !match_all && (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') || # date like 12.07.2011 13:45
            /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
            /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') || # date like 12/07/11
-           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8')
+           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
           puts "============== Различие ===============".encode('cp866')
           puts "<<<======================"
@@ -55,8 +55,18 @@ class ReportComparer
   end
 end
 
+def check(arg, s, f)
+  arg == "-#{s}" || arg == "--#{f}"
+end
+
 old_txt = TxtReport.new(ARGV[-2])
 new_txt = TxtReport.new(ARGV[-1])
 
+match_all = false
+
+ARGV.each do |arg|
+  match_all ||= check arg, :a, :all
+end
+
 rc = ReportComparer.new
-rc.compare old_txt, new_txt
+rc.compare old_txt, new_txt, match_all
