@@ -35,15 +35,21 @@ class ReportComparer
       end
     end
 
+    count = 0
+    
     # show diff
     diffs.each do |diff|
       if diff[:old] || diff[:new]
-        if !match_all && (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') || # date like 12.07.2011 13:45
+        if !match_all &&
+          # date like 12.07.2011 13:45
+          (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') || 
            /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
-           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') || # date like 12/07/11
+          # date like 12/07/11
+           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') || 
            /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
-          puts "============== Различие ===============".encode('cp866')
+          count += 1
+          puts "============== Различие #{count} ===============".encode('cp866')
           puts "<<<======================"
           puts diff[:old].encode('cp866', 'cp1251')
           puts "========================="
@@ -52,6 +58,9 @@ class ReportComparer
         end
       end      
     end
+    
+    puts "\nВсего найдено различий: #{count}".encode('cp866')
+    
   end
 end
 
