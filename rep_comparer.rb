@@ -55,18 +55,23 @@ class ReportComparer
   end
 end
 
+# checks arg for short or full flag
 def check(arg, s, f)
   arg == "-#{s}" || arg == "--#{f}"
 end
 
+# open files
 old_txt = TxtReport.new(ARGV[-2])
 new_txt = TxtReport.new(ARGV[-1])
 
+# set default options
 match_all = false
 
+# check user input for options
 ARGV.each do |arg|
   match_all ||= check arg, :a, :all
 end
 
+# compare
 rc = ReportComparer.new
 rc.compare old_txt, new_txt, match_all
