@@ -44,14 +44,19 @@ class ReportComparer
 
     diffs.each do |diff|
       if diff[:old] || diff[:new]
-        puts "============== Различие ===============".encode('cp866')
-        puts "<<<======================"
-        puts diff[:old].encode('cp866', 'cp1251')
-        puts "========================="
-        puts diff[:new].encode('cp866', 'cp1251')
-        puts "======================>>>"
-      end
+        if /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') #||
+           /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8')
+        else
+          puts "============== Различие ===============".encode('cp866')
+          puts "<<<======================"
+          puts diff[:old].encode('cp866', 'cp1251')
+          puts "========================="
+          puts diff[:new].encode('cp866', 'cp1251')
+          puts "======================>>>"
+        end
+      end      
     end
+    #puts diffs.inspect
   end
 end
 
