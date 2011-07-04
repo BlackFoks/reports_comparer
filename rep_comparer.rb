@@ -2,26 +2,26 @@
 
 class TxtReport
   attr_reader :filename
-
+  
   def initialize(filename)
     @filename = filename
-  end  
+  end
 end
 
 class ReportComparer
   def compare(oldTxt, newTxt, match_all = false)
     diffs = []
     old_rep = {}
-    new_rep = {}    
+    new_rep = {}
     
     # read old file
     File.open(oldTxt.filename, 'r') do |f|
-      f.lines.each {|line| old_rep[f.lineno] = line }      
+      f.lines.each {|line| old_rep[f.lineno] = line }
     end
     
     # read new file
     File.open(newTxt.filename, 'r') do |f|
-      f.lines.each {|line| new_rep[f.lineno] = line }      
+      f.lines.each {|line| new_rep[f.lineno] = line }
     end
     
     # compare
@@ -43,10 +43,10 @@ class ReportComparer
       if diff[:old] || diff[:new]
         if !match_all &&
           # date like 12.07.2011 13:45
-          (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') || 
+          (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
            /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
           # date like 12/07/11
-           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') || 
+           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') ||
            /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
           count += 1
@@ -57,10 +57,10 @@ class ReportComparer
           puts diff[:new].encode('cp866', 'cp1251')
           puts "======================>>>"
         end
-      end      
+      end
     end
     
-    wputs "\nВсего найдено различий: #{count}"  
+    wputs "\nВсего найдено различий: #{count}"
   end
 end
 
@@ -78,10 +78,11 @@ def wputs(str)
   end
 end
 
+# print help
 if ARGV.empty? || ARGV.count < 2
   wputs "Скрипт сравнения отчетов."
   wputs "Использование: ruby rep_comparer.rb [опции] [старый_отчет] [новый_отчет]"
-  puts 
+  puts
   wputs "Ищет отличия, кроме отличий в датах.\n\n"
   wputs "Строки, в которых присутствуют даты формата 12.07.11 15:35"
   wputs "или формата 12.07.2011 15:35 или формата 12/07/11 не будут"
