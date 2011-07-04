@@ -49,7 +49,7 @@ class ReportComparer
            /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
           count += 1
-          puts "============== Различие #{count} ===============".encode('cp866')
+          wputs "============== Различие #{count} ==============="
           puts "<<<======================"
           puts diff[:old].encode('cp866', 'cp1251')
           puts "========================="
@@ -59,14 +59,38 @@ class ReportComparer
       end      
     end
     
-    puts "\nВсего найдено различий: #{count}".encode('cp866')
-    
+    wputs "\nВсего найдено различий: #{count}"  
   end
 end
 
 # checks arg for short or full flag
 def check(arg, s, f)
   arg == "-#{s}" || arg == "--#{f}"
+end
+
+# puts string in cp866 encoding
+def wputs(str)
+  begin
+    puts str.encode('cp866')
+  rescue
+    puts str
+  end
+end
+
+if ARGV.empty? || ARGV.count < 2
+  wputs "Скрипт сравнения отчетов."
+  wputs "Использование: ruby rep_comparer.rb [опции] [старый_отчет] [новый_отчет]"
+  puts 
+  wputs "Ищет отличия, кроме отличий в датах.\n\n"
+  wputs "Строки, в которых присутствуют даты формата 12.07.11 15:35"
+  wputs "или формата 12.07.2011 15:35 или формата 12/07/11 не будут"
+  wputs "учитываться при сравнении."
+  puts
+  wputs "Доступные опции:"
+  wputs " --all (-a): в процессе сравнения будут учитываться любые"
+  wputs "             отличия, в том числе и отличия в датах и времени."
+  
+  exit
 end
 
 # open files
