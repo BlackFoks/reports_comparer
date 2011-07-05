@@ -50,7 +50,13 @@ class ReportComparer
       wputs "\n\n"
     end
     
-    wputs "Итоговая информация:"
+    
+    
+    wputs "Сводная информация:"
+    wputs "    Отчетов без изменений: #{@summary.count {|x| x[:count] <= 0 }}"
+    wputs "    Отчетов с изменениями: #{@summary.count {|x| x[:count] > 0 }}"
+    wputs
+    wputs "Подробно:"
     @summary.each do |sum|
       if sum[:count] > 0
         wputs "#{sum[:file]} => ошибок: #{sum[:count]}"
