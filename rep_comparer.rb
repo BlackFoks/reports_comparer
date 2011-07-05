@@ -47,7 +47,7 @@ class ReportComparer
       old_txt_rep = TxtReport.new(old_filename)
       new_txt_rep = TxtReport.new(new_filename)
       self.compare(old_txt_rep, new_txt_rep, match_all)
-      wputs "\n\n\n"
+      wputs "\n\n"
     end
     
     wputs "Итоговая информация:"
@@ -95,19 +95,12 @@ class ReportComparer
     diffs.each do |diff|
       if diff[:old] && diff[:new]
         if !match_all &&
-          # date like 12.07.2011 13:45
-          # (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
           (/^.*ОТЧЕТ ПОЛУЧЕН.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
            /^.*ОТЧЁТ ПОЛУЧЕН.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
            /^.*Отчёт получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
            /^.*Отчет получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
            /^.*Отчет выполнен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
            /^.*Отчёт выполнен.*$/ =~ diff[:old].encode('utf-8', 'cp1251'))
-           # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
-           # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
-          # date like 12/07/11
-           # /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') ||
-           # /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
           count += 1
           wputs "============== Различие #{count} ==============="
@@ -130,7 +123,7 @@ def check(arg, s, f)
   arg == "-#{s}" || arg == "--#{f}"
 end
 
-# puts string in cp866 encoding
+# puts string
 def wputs(str='')
   begin
     if $save_to_file
@@ -158,9 +151,13 @@ if ARGV.empty? || ARGV.count < 2
   wputs "учитываться при сравнении."
   wputs
   wputs "Доступные опции:"
-  wputs " --all (-a): в процессе сравнения будут учитываться любые"
-  wputs "             отличия, в том числе и отличия в датах и времени."
-  
+  wputs " --all (-a) : в процессе сравнения будут учитываться любые"
+  wputs "              отличия, в том числе и отличия в датах и времени."
+  wputs " --dirs (-d): сравниваться будут все файлы внутри указанных"
+  wputs "              директорий."
+  wputs " --file (-f): вывод будет осуществлен в файл в папке скрипта"
+  wputs "              в кодировке cp1251."
+  wputs
   exit
 end
 
@@ -180,6 +177,7 @@ ARGV.each do |arg|
  $save_to_file ||= check arg, :f, :file
 end
 
+# open file if we should write to file
 if $save_to_file
   rep_filename = 'report_' + Time.now.strftime('%Y_%m_%d_%H_%M_%S') + '.txt'
   $out_file = File.open(rep_filename, 'w')
@@ -193,6 +191,5 @@ else
   rc.compare old_txt, new_txt, match_all
 end
 
+# close file if it has been opened
 $out_file.close if $save_to_file
-# rc.compare old_txt, new_txt, match_all
-# rc.compare_dirs ARGV[-2], ARGV[-1], match_all
