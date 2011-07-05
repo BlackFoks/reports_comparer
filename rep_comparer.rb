@@ -20,9 +20,24 @@ class ReportComparer
     Dir.chdir(new_dir)
     new_reps = Dir.glob('*.*')
     
-    old_reps.each {|r| puts r }
-    new_reps.each {|r| puts r }
+    # get list of reps
+    old_new_reps = old_reps & new_reps
+    only_old_reps = old_reps - new_reps
+    only_new_reps = new_reps - old_reps
     
+    wputs "Присутствуют только в папке со старыми отчетами:"
+    only_old_reps.each {|r| puts ' '*4 + r }
+    wputs "Всего: #{only_old_reps.count}"
+    
+    wputs "\nПрисутствуют только в папке с новыми отчетами:"
+    only_new_reps.each {|r| puts ' '*4 + r }
+    wputs "Всего: #{only_new_reps.count}"
+    
+    wputs "\nОбщих отчетов:"
+    old_new_reps.each {|r| puts ' '*4 + r }
+    wputs "Всего: #{old_new_reps.count}"
+    
+    #compare files...
   end
 
   def compare(oldTxt, newTxt, match_all = false)
