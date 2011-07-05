@@ -98,7 +98,11 @@ class ReportComparer
           # date like 12.07.2011 13:45
           # (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
           (/^.*ОТЧЕТ ПОЛУЧЕН.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
-          /^.*Отчет получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251'))
+           /^.*ОТЧЁТ ПОЛУЧЕН.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
+           /^.*Отчёт получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
+           /^.*Отчет получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
+           /^.*Отчет выполнен.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
+           /^.*Отчёт выполнен.*$/ =~ diff[:old].encode('utf-8', 'cp1251'))
            # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
            # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
           # date like 12/07/11
