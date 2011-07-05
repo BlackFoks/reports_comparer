@@ -29,15 +29,15 @@ class ReportComparer
     only_new_reps = new_reps - old_reps
     
     wputs "Присутствуют только в папке со старыми отчетами:"
-    only_old_reps.each {|r| puts ' '*4 + r }
+    only_old_reps.each {|r| wputs ' '*4 + r }
     wputs "Всего: #{only_old_reps.count}"
     
     wputs "\nПрисутствуют только в папке с новыми отчетами:"
-    only_new_reps.each {|r| puts ' '*4 + r }
+    only_new_reps.each {|r| wputs ' '*4 + r }
     wputs "Всего: #{only_new_reps.count}"
     
     wputs "\nОбщих отчетов:"
-    old_new_reps.each {|r| puts ' '*4 + r }
+    old_new_reps.each {|r| wputs ' '*4 + r }
     wputs "Всего: #{old_new_reps.count}\n\n"
     
     #compare files...
@@ -47,9 +47,10 @@ class ReportComparer
       old_txt_rep = TxtReport.new(old_filename)
       new_txt_rep = TxtReport.new(new_filename)
       self.compare(old_txt_rep, new_txt_rep, match_all)
-      puts "\n\n\n"
+      wputs "\n\n\n"
     end
     
+    wputs "Итоговая информация:"
     @summary.each do |sum|
       if sum[:count] > 0
         wputs "#{sum[:file]} => ошибок: #{sum[:count]}"
@@ -106,11 +107,11 @@ class ReportComparer
         else
           count += 1
           wputs "============== Различие #{count} ==============="
-          puts "<<<======================"
-          puts diff[:old].encode('cp866', 'cp1251')
-          puts "========================="
-          puts diff[:new].encode('cp866', 'cp1251')
-          puts "======================>>>"
+          wputs "<<<======================"
+          wputs diff[:old].encode('cp866', 'cp1251')
+          wputs "========================="
+          wputs diff[:new].encode('cp866', 'cp1251')
+          wputs "======================>>>"
         end
       end
     end
@@ -126,11 +127,19 @@ def check(arg, s, f)
 end
 
 # puts string in cp866 encoding
-def wputs(str)
+def wputs(str='')
   begin
-    puts str.encode('cp866')
+    if $save_to_file
+      $out_file.puts(str.encode('utf-8'))
+    else
+      puts str.encode('cp866')
+    end
   rescue
-    puts str
+    if $save_to_file
+      $out_file.puts(str)
+    else
+      puts str
+    end
   end
 end
 
@@ -138,12 +147,12 @@ end
 if ARGV.empty? || ARGV.count < 2
   wputs "Скрипт сравнения отчетов."
   wputs "Использование: ruby rep_comparer.rb [опции] [старый_отчет] [новый_отчет]"
-  puts
+  wputs
   wputs "Ищет отличия, кроме отличий в датах.\n\n"
   wputs "Строки, в которых присутствуют даты формата 12.07.11 15:35"
   wputs "или формата 12.07.2011 15:35 или формата 12/07/11 не будут"
   wputs "учитываться при сравнении."
-  puts
+  wputs
   wputs "Доступные опции:"
   wputs " --all (-a): в процессе сравнения будут учитываться любые"
   wputs "             отличия, в том числе и отличия в датах и времени."
@@ -158,11 +167,18 @@ new_txt = TxtReport.new(ARGV[-1])
 # set default options
 match_all = false
 match_dirs = false
+$save_to_file = false
 
 # check user input for options
 ARGV.each do |arg|
-  match_all  ||= check arg, :a, :all
-  match_dirs ||= check arg, :d, :dirs
+  match_all    ||= check arg, :a, :all
+  match_dirs   ||= check arg, :d, :dirs
+ $save_to_file ||= check arg, :f, :file
+end
+
+if $save_to_file
+  rep_filename = 'report_' + Time.now.strftime('%Y_%m_%d_%H_%M_%S') + '.txt'
+  $out_file = File.open(rep_filename, 'w')
 end
 
 # compare
@@ -172,5 +188,7 @@ if match_dirs
 else
   rc.compare old_txt, new_txt, match_all
 end
+
+$out_file.close if $save_to_file
 # rc.compare old_txt, new_txt, match_all
 # rc.compare_dirs ARGV[-2], ARGV[-1], match_all
