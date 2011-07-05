@@ -9,16 +9,16 @@ class TxtReport
 end
 
 class ReportComparer
-  def compare_dirs(old_dir, new_dir)
+  def compare_dirs(old_dir, new_dir, match_all = false)
     old_reps, new_reps = [], []
     
     # get list of old reports
     Dir.chdir(old_dir)
-    old_reps = Dir.glob('*.*')
+    old_reps = Dir.glob('*.txt')
     
     # get list of new reposts
     Dir.chdir(new_dir)
-    new_reps = Dir.glob('*.*')
+    new_reps = Dir.glob('*.txt')
     
     # get list of reps
     old_new_reps = old_reps & new_reps
@@ -35,12 +35,23 @@ class ReportComparer
     
     wputs "\nОбщих отчетов:"
     old_new_reps.each {|r| puts ' '*4 + r }
-    wputs "Всего: #{old_new_reps.count}"
+    wputs "Всего: #{old_new_reps.count}\n\n"
     
     #compare files...
+    old_new_reps.each do |r|
+      old_filename = File.join(old_dir, r)
+      new_filename = File.join(new_dir, r)
+      old_txt_rep = TxtReport.new(old_filename)
+      new_txt_rep = TxtReport.new(new_filename)
+      self.compare(old_txt_rep, new_txt_rep, match_all)
+      puts "\n\n\n"
+    end
+    
   end
 
   def compare(oldTxt, newTxt, match_all = false)
+    wputs "Сравниваем файлы #{oldTxt.filename} и #{newTxt.filename}..."
+  
     diffs = []
     old_rep = {}
     new_rep = {}
@@ -71,7 +82,7 @@ class ReportComparer
     
     # show diff
     diffs.each do |diff|
-      if diff[:old] || diff[:new]
+      if diff[:old] && diff[:new]
         if !match_all &&
           # date like 12.07.2011 13:45
           (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
