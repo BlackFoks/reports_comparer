@@ -1,0 +1,81 @@
+
+Generate reports starting ...   [bragin / 24.06.2011 / 12:55]
+
+ALIAS = CNN_TEST
+OWNER = COMP
+USER  = COMP
+
+
+[OK]     "abonent_docs1-all.tmp"                      [0:0:47]
+[OK]     "ccc_abonents.tmp"                           [0:1:32]
+[OK]     "ccc_abonents1-kir_otopl.tmp"                [0:1:1]
+[OK]     "ccc_abonents1-len_otopl.tmp"                [0:0:46]
+[OK]     "ccc_actrep.tmp"                             [0:0:32]
+[OK]     "ccc_ac_stat.tmp"                            [0:0:33]
+[OK]     "ccc_ac_vol_peni.tmp"                        [0:0:45]
+[OK]     "ccc_charging.tmp"                           [0:1:5]
+[OK]     "ccc_correct.tmp"                            [0:5:7]
+[OK]     "ccc_debters.tmp"                            [0:0:40]
+[OK]     "ccc_depoz.tmp"                              [0:1:50]
+[OK]     "ccc_grant.tmp"                              [0:1:27]
+[OK]     "ccc_gr_lgoters.tmp"                         [0:1:57]
+[OK]     "ccc_incoming.tmp"                           [0:2:26]
+[OK]     "ccc_incomOther.tmp"                         [0:1:14]
+[OK]     "ccc_lgoters.tmp"                            [0:0:33]
+[OK]     "ccc_lgoters_s.tmp"                          [0:10:16]
+
+MSG-00100: Отчёт завершён
+
+[OK]     "ccc_lgotsubs.tmp"                           [0:2:32]
+[OK]     "ccc_percent.tmp"                            [0:0:49]
+[OK]     "ccc_records.tmp"                            [0:0:53]
+[OK]     "ccc_vol-dom.tmp"                            [0:0:43]
+[OK]     "ccc_vol.tmp"                                [0:0:15]
+[OK]     "debts_by_houses.tmp"                        [0:0:25]
+[OK]     "debts_fight.tmp"                            [0:0:19]
+[OK]     "FLAT_STATISTICS2-area.tmp"                  [0:0:15]
+[OK]     "FLAT_STATISTICS2-flats.tmp"                 [0:0:15]
+[OK]     "FLAT_STATISTICS2-roomers.tmp"               [0:0:13]
+[OK]     "house_lodgers.tmp"                          [0:0:23]
+[OK]     "house_nach.tmp"                             [0:0:17]
+[OK]     "income_by_types.tmp"                        [0:0:28]
+[OK]     "income_rcv_txt.tmp"                         [0:0:26]
+[OK]     "incoming-dates.tmp"                         [0:0:22]
+[OK]     "incoming-houses.tmp"                        [0:0:15]
+[OK]     "letters.tmp"                                [0:7:31]
+[OK]     "paym_decode_z.tmp"                          [0:0:52]
+[OK]     "saldo_by_houses.tmp"                        [0:0:37]
+[OK]     "second_appart.tmp"                          [0:0:10]
+[OK]     "uvx_bal.tmp"                                [0:0:29]
+[OK]     "uvx_incoming.tmp"                           [0:0:11]
+[OK]     "vol_house.tmp"                              [0:0:22]
+[ERROR]  "vol_zku_filial.tmp"                         [ - ]
+
+ORA-00942: table or view does not exist
+           from comp. ==> vw_rpt_vol_zku_filial a
+
+[OK]     "ccc_ac_vol1.tmp"                            [0:1:10]
+[OK]     "ccc_ac_vol2.tmp"                            [0:0:17]
+[OK]     "ccc_ac_vol3.tmp"                            [0:0:24]
+[OK]     "ccc_charging1.tmp"                          [0:1:10]
+[OK]     "ccc_charging2.tmp"                          [0:0:14]
+[OK]     "ccc_charging3.tmp"                          [0:0:13]
+[OK]     "ccc_debtm1.tmp"                             [0:0:25]
+[OK]     "ccc_debtm2.tmp"                             [0:0:22]
+[OK]     "ccc_debtm3.tmp"                             [0:0:19]
+[OK]     "ccc_incoming_per_dost1.tmp"                 [0:0:30]
+[OK]     "ccc_incoming_per_dost2.tmp"                 [0:0:19]
+[OK]     "ccc_incoming_per_dost3.tmp"                 [0:0:15]
+[OK]     "ccc_pers_acc_v2_dos1.tmp"                   [0:0:54]
+[OK]     "ccc_pers_acc_v2_dos2.tmp"                   [0:0:32]
+[OK]     "ccc_pers_acc_v2_dos3.tmp"                   [0:0:13]
+[OK]     "T1.1.ccc_ac_vol_peni.tmp"                   [0:0:49]
+[OK]     "T1.2.ccc_ac_vol_peni.tmp"                   [0:0:12]
+[OK]     "T1.3.ccc_ac_vol_peni.tmp"                   [0:0:15]
+
+
+REPORTS = 59
+ERRORS  = 1
+
+Generate reports complete ...   [1:1:1 / 24.06.2011 / 13:56]
+
