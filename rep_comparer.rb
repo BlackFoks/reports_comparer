@@ -48,9 +48,7 @@ class ReportComparer
       new_txt_rep = TxtReport.new(new_filename)
       self.compare(old_txt_rep, new_txt_rep, match_all)
       wputs "\n\n"
-    end
-    
-    
+    end 
     
     wputs "Сводная информация:"
     wputs "    Отчетов без изменений: #{@summary.count {|x| x[:count] <= 0 }}"
