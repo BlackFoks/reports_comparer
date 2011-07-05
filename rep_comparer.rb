@@ -45,8 +45,7 @@ class ReportComparer
       new_txt_rep = TxtReport.new(new_filename)
       self.compare(old_txt_rep, new_txt_rep, match_all)
       puts "\n\n\n"
-    end
-    
+    end    
   end
 
   def compare(oldTxt, newTxt, match_all = false)
@@ -85,11 +84,14 @@ class ReportComparer
       if diff[:old] && diff[:new]
         if !match_all &&
           # date like 12.07.2011 13:45
-          (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
-           /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
+          # (/^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:old].encode('utf-8') ||
+          (/^.*ОТЧЕТ ПОЛУЧЕН.*$/ =~ diff[:old].encode('utf-8', 'cp1251') ||
+          /^.*Отчет получен.*$/ =~ diff[:old].encode('utf-8', 'cp1251'))
+           # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
+           # /^.*\d+\.\d+\.\d+\s\d+:\d+.*$/ =~ diff[:new].encode('utf-8') ||
           # date like 12/07/11
-           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') ||
-           /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
+           # /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:old].encode('utf-8') ||
+           # /^.*\d{1,2}\/\d{1,2}\/\d{1,2}.*$/ =~ diff[:new].encode('utf-8'))
         else
           count += 1
           wputs "============== Различие #{count} ==============="
@@ -143,13 +145,20 @@ new_txt = TxtReport.new(ARGV[-1])
 
 # set default options
 match_all = false
+match_dirs = false
 
 # check user input for options
 ARGV.each do |arg|
-  match_all ||= check arg, :a, :all
+  match_all  ||= check arg, :a, :all
+  match_dirs ||= check arg, :d, :dirs
 end
 
 # compare
 rc = ReportComparer.new
+if match_dirs
+  rc.compare_dirs ARGV[-2], ARGV[-1], match_all
+else
+  rc.compare old_txt, new_txt, match_all
+end
 # rc.compare old_txt, new_txt, match_all
-rc.compare_dirs ARGV[-2], ARGV[-1]
+# rc.compare_dirs ARGV[-2], ARGV[-1], match_all
