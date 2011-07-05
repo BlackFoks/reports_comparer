@@ -9,6 +9,9 @@ class TxtReport
 end
 
 class ReportComparer
+  def initialize
+    @summary = []
+  end
   def compare_dirs(old_dir, new_dir, match_all = false)
     old_reps, new_reps = [], []
     
@@ -45,7 +48,15 @@ class ReportComparer
       new_txt_rep = TxtReport.new(new_filename)
       self.compare(old_txt_rep, new_txt_rep, match_all)
       puts "\n\n\n"
-    end    
+    end
+    
+    @summary.each do |sum|
+      if sum[:count] > 0
+        wputs "#{sum[:file]} => ошибок: #{sum[:count]}"
+      else
+        wputs "#{sum[:file]} => Ok!"
+      end
+    end
   end
 
   def compare(oldTxt, newTxt, match_all = false)
@@ -104,6 +115,7 @@ class ReportComparer
       end
     end
     
+    @summary << { :file => oldTxt.filename, :count => count }
     wputs "\nВсего найдено различий: #{count}"
   end
 end
